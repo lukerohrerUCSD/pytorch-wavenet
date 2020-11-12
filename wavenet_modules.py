@@ -124,4 +124,7 @@ def constant_pad_1d(input,
                     dimension=0,
                     value=0,
                     pad_start=False):
-    return ConstantPad1d(target_size, dimension, value, pad_start)(input)
+    #return ConstantPad1d(target_size, dimension, value, pad_start)(input)
+    pads = [0] * (input.ndim * 2)
+    pads[2 * dimension + (1 if pad_start else 0)] = target_size - input.shape[dimension]
+    return torch.nn.functional.pad(input, pads[::-1], mode='constant', value=value)
